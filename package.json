@@ -2,6 +2,9 @@
   "name": "syndicate-bot",
   "version": "1.0.0",
   "description": "",
+  "engines": {
+    "node": "16.13.2"
+  },
   "main": "bot.js",
   "scripts": {
     "dev": "nodemon bot.js"
