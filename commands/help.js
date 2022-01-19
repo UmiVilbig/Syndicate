@@ -12,6 +12,7 @@ module.exports = {
         .setDescription(`**Here a list of commands** 
         \n ** > /ping ** check to see if the bot is working and live
         \n ** > /stats ** type the NFT collection to see the stats
+        \n ** > /solana ** returns the price and performance of Solana
         \n stay tuned for future updates`)
         .setTimestamp();
 
