@@ -24,7 +24,7 @@ module.exports = {
                 
                 const floorPriceEmbed = new Discord.MessageEmbed()
                     .setColor("#e11f95")
-                    .setTitle("**Solana Helper v 0.0.1**")
+                    .setTitle("**Magic Eden Price Checker!**")
                     .setDescription(`Here are the stats for **${collection.toUpperCase()}** 
                     \n ** > Floor Price: **${(Math.round(floorPrice * 100)) / 100} Sols
                     \n ** > Volume:** ${(Math.round(volume * 100)) / 100} Sols
@@ -38,17 +38,8 @@ module.exports = {
                 })
             } catch(err){
                 console.error(err)
-
-                const errorEmbed = new Discord.MessageEmbed()
-                .setColor("#e11f95")
-                .setTitle("**Magic Eden Price Checker!**")
-                .setDescription(`**We are so sorry, there was a problem with your request** 
-                \n __Make sure you typed your collection exactly__
-                \n if thats not the case it may have been an internal error
-                \n we will be working on a fix soon`)
-                .setTimestamp();
                 interaction.reply({
-                    embeds: [errorEmbed],
+                    content: "an error occured. Make sure you type your collection exactly",
                     ephemeral: true
                 })
             }
