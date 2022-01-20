@@ -8,7 +8,6 @@ module.exports = {
         .setDescription("see your profits"),
         async execute(interaction) {
             id = interaction.user.id
-            console.log(id)
             UserProfits.findOne({userId: id}, (err, profits) => {
                 if(err){
                     interaction.reply({
@@ -16,8 +15,13 @@ module.exports = {
                         ephemeral: true
                     })
                 }
+                if(profits.total_profits > 0){
+                    color = '#00FF00'
+                } else {
+                    color = '#FF0000'
+                }
                 const userProfitEmbed = new Discord.MessageEmbed()
-                    .setColor("#e11f95")
+                    .setColor(`${color}`)
                     .setAuthor({name: 'Syndicate', iconURL: 'https://cdn.discordapp.com/attachments/933204859728068608/933204908734312518/syndicate_logo.jpg'})
                     .setTitle("**Syndicate Profit Tracker**")
                     .addFields(
