@@ -8,11 +8,12 @@ module.exports = {
     async execute(interaction) {
         const helpEmbed = new Discord.MessageEmbed()
         .setColor("#e11f95")
-        .setTitle("**Solana Helper v 0.0.1**")
+        .setTitle("**Syndicate**")
         .setDescription(`**Here a list of commands** 
         \n ** > /ping ** check to see if the bot is working and live
-        \n ** > /stats ** type the NFT collection to see the stats
         \n ** > /solana ** returns the price and performance of Solana
+        \n ** > /cooked  ** track your profits (+, -, or blank) and profit in sol ie. (+1)
+        \n ** > /profit ** see your profits
         \n stay tuned for future updates`)
         .setTimestamp();
 
