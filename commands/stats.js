@@ -24,13 +24,15 @@ module.exports = {
                 
                 const floorPriceEmbed = new Discord.MessageEmbed()
                     .setColor("#e11f95")
-                    .setTitle("**Magic Eden Price Checker!**")
-                    .setDescription(`Here are the stats for **${collection.toUpperCase()}** 
-                    \n ** > Floor Price: **${(Math.round(floorPrice * 100)) / 100} Sols
-                    \n ** > Volume:** ${(Math.round(volume * 100)) / 100} Sols
-                    \n ** > Listed:**  ${listedCount}
-                    \n ** > Average Price:** ${(Math.round(avgPrice * 100)) / 100} Sols
-                    `)
+                    .setAuthor({name: 'Syndicate', iconURL: 'https://cdn.discordapp.com/attachments/933204859728068608/933204908734312518/syndicate_logo.jpg'})
+                    .setTitle("**Magic Eden Stats**")
+                    .addFields(
+                        {name: 'Floor Price', value: `${(Math.round(floorPrice * 100)) / 100} SOL`, inline: true},
+                        {name: 'Volume', value: `${(Math.round(volume * 100)) / 100} Sols`, inline: true},
+                        {name: 'Listed', value: `${listedCount}`, inline: true},
+                        {name: 'Avg Price', value: `${(Math.round(avgPrice * 100)) / 100} Sols`, inline: true}
+                    )
+                    .setThumbnail('https://cdn.discordapp.com/attachments/933204859728068608/933204908734312518/syndicate_logo.jpg')
                     .setTimestamp();
     
                 interaction.reply({

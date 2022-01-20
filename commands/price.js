@@ -13,6 +13,7 @@ module.exports = {
             price = response[0].current_price
             rank = response[0].market_cap_rank
             change = Math.round(response[0].price_change_percentage_24h * 100) / 100
+            icon = response[0].image
             
             if(change > 0){
                 color = '#00FF00'
@@ -22,12 +23,15 @@ module.exports = {
 
             const solanaPriceEmbed = new Discord.MessageEmbed()
                 .setColor(color)
-                .setTitle('**Syndicate**')
-                .setDescription(`**Here are the market Data for Solana**
-                \n ** > Price:  ** $${price}
-                \n ** > Rank:   ** ${rank}
-                \n ** 24 Hour Change:   ** ${change}%
-                `)
+                .setAuthor({name: 'Syndicate', iconURL: 'https://cdn.discordapp.com/attachments/933204859728068608/933204908734312518/syndicate_logo.jpg'})
+                .setTitle('**Solana**')
+                .setThumbnail(icon)
+                .setDescription(`**Here are the market Data for Solana**`)
+                .addFields(
+                    {name: '**Price**', value: `$${price}`, inline: true},
+                    {name: '**24hr Change**', value: `${change}%`, inline: true},
+                    {name: '**Rank**', value: `${rank}`, inline: true},
+                )
                 .setTimestamp()
 
             interaction.reply({
