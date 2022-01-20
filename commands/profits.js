@@ -4,58 +4,17 @@ const Discord = require('discord.js')
 
 module.exports = {
     data: new SlashCommandBuilder()
-        .setName("cooked")
-        .setDescription("add your profits to the database")
-        .addStringOption(option => 
-            option
-            .setName("profit")
-            .setDescription("the collection to check")
-            .setRequired(true)),
-    async execute(interaction) {
-        id = interaction.user.id
-        value =  (interaction.options._hoistedOptions[0].value)
-        direction = value.charAt(0)
-        amount = Number(value.substring(1))
-        if(isNaN(amount)){
-            interaction.reply({
-                content: 'Please type the direction (+, - or blank) then the profit in sol. IE +1',
-                ephemeral: true
-            })
-            return;
-        }
-
-        
-        UserProfits.findOne({userId: id}, (err, profits) => {
-            if (err){
-                interaction.reply("An error occured when handling your request")
-                return
-            }
-            if(!profits){
-                if(direction === '+'){
-                    profits = new UserProfits({
-                    user_id: id,
-                    total_profits: amount
-                    })
-                } else {
-                    profits = new UserProfits({
-                    user_id: id,
-                    total_profits: value
-                })
-                }
-            } else {
-                totalUserProfits = profits.total_profits
-                if(direction === '+' || direction === '0'){
-                    totalUserProfits = totalUserProfits + amount
-                    profits.total_profits = totalUserProfits
-                } else {
-                    totalUserProfits = totalUserProfits - amount
-                    profits.total_profits = totalUserProfits
-                }
-            }
-
-            profits.save(err => {
+        .setName("profit")
+        .setDescription("see your profits"),
+        async execute(interaction) {
+            id = interaction.user.id
+            console.log(id)
+            UserProfits.findOne({userId: id}, (err, profits) => {
                 if(err){
-                    console.log('there was an error committing to db')
+                    interaction.reply({
+                        content: 'It seems like you are not in our records... type /cooked and add your profits',
+                        ephemeral: true
+                    })
                 }
                 const userProfitEmbed = new Discord.MessageEmbed()
                     .setColor("#e11f95")
@@ -71,6 +30,5 @@ module.exports = {
                     embeds: [userProfitEmbed]
                 })
             })
-        })
-    }
+        }
 }
