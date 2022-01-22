@@ -57,6 +57,12 @@ module.exports = {
                 if(err){
                     console.log('there was an error committing to db')
                 }
+
+                if(profits.total_profits > 0){
+                    color = '#00FF00'
+                } else {
+                    color = '#FF0000'
+                }
                 const userCooksEmbed = new Discord.MessageEmbed()
                     .setColor("#e11f95")
                     .setAuthor({name: 'Syndicate', iconURL: 'https://cdn.discordapp.com/attachments/933204859728068608/933204908734312518/syndicate_logo.jpg'})
