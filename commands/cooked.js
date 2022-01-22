@@ -12,6 +12,8 @@ module.exports = {
             .setDescription("the collection to check")
             .setRequired(true)),
     async execute(interaction) {
+        today = new Date()
+        today = today.getDate()
         id = interaction.user.id
         value =  (interaction.options._hoistedOptions[0].value)
         direction = value.charAt(0)
@@ -34,22 +36,53 @@ module.exports = {
                 if(direction === '+'){
                     profits = new UserProfits({
                     user_id: id,
-                    total_profits: amount
+                    total_profits: amount,
+                    today_date: today,
+                    today_profit: amount
                     })
                 } else {
-                    profits = new UserProfits({
-                    user_id: id,
-                    total_profits: value
-                })
+                    if(today === profits.today_date){
+                        profits = new UserProfits({
+                            user_id: id,
+                            total_profits: value,
+                            today_date: today,
+                            today_profit: profits.today_profit + amount,
+                        })
+                    } else{
+                        profits = new UserProfits({
+                        user_id: id,
+                        total_profits: value,
+                        today_date: today,
+                        today_profit: amount
+                    })
+                    }
                 }
             } else {
                 totalUserProfits = profits.total_profits
-                if(direction === '+' || direction === '0'){
-                    totalUserProfits = totalUserProfits + amount
-                    profits.total_profits = totalUserProfits
+                if(today === profits.today_date){
+                    if(direction === '+' || direction === '0'){
+                        totalUserProfits = totalUserProfits + amount
+                        profits.total_profits = totalUserProfits
+                        profits.today_profit = profits.today_profit + amount
+                        profits.today_date = today
+                    } else {
+                        totalUserProfits = totalUserProfits - amount
+                        profits.total_profits = totalUserProfits
+                        profits.today_profit = profits.today_profit - amount
+                        profits.today_date = today
+                    }
                 } else {
-                    totalUserProfits = totalUserProfits - amount
-                    profits.total_profits = totalUserProfits
+                    if(direction === '+' || direction === '0'){
+                        totalUserProfits = totalUserProfits + amount
+                        profits.total_profits = totalUserProfits
+                        profits.today_profit = amount
+                        profits.today_date = today
+                    } else {
+                        totalUserProfits = totalUserProfits - amount
+                        profits.total_profits = totalUserProfits
+                        profits.today_profit = 0 - amount
+                        profits.today_date = today
+                    }
                 }
             }
 
