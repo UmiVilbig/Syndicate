@@ -1,0 +1,2 @@
+mongo local url = mongodb://127.0.0.1:27017/discord-bot
+mongo atlas url = mongodb+srv://Syndicate:Umizumi107@syndicate.razka.mongodb.net/Syndicate?retryWrites=true&w=majority

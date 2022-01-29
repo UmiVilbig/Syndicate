@@ -4,6 +4,6 @@ const profitsSchema = new mongoose.Schema({
     user_id: String,
     total_profits: Number,
     today_date: String,
-    today_profit: Number,
+    last_entry: Number,
 })
 module.exports = mongoose.model("UserProfits", profitsSchema)

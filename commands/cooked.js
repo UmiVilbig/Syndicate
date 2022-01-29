@@ -37,52 +37,33 @@ module.exports = {
                     profits = new UserProfits({
                     user_id: id,
                     total_profits: amount,
-                    today_date: today,
-                    today_profit: amount
+                    last_entry: amount
                     })
                 } else {
                     if(today === profits.today_date){
                         profits = new UserProfits({
                             user_id: id,
                             total_profits: value,
-                            today_date: today,
-                            today_profit: profits.today_profit + amount,
+                            last_entry: profits.last_entry + amount,
                         })
                     } else{
                         profits = new UserProfits({
                         user_id: id,
                         total_profits: value,
-                        today_date: today,
-                        today_profit: amount
+                        last_entry: amount
                     })
                     }
                 }
             } else {
-                totalUserProfits = profits.total_profits
-                if(today === profits.today_date){
-                    if(direction === '+' || direction === '0'){
-                        totalUserProfits = totalUserProfits + amount
-                        profits.total_profits = totalUserProfits
-                        profits.today_profit = profits.today_profit + amount
-                        profits.today_date = today
-                    } else {
-                        totalUserProfits = totalUserProfits - amount
-                        profits.total_profits = totalUserProfits
-                        profits.today_profit = profits.today_profit - amount
-                        profits.today_date = today
-                    }
+            totalUserProfits = profits.total_profits
+                if(direction === '+' || direction === '0'){
+                    totalUserProfits = totalUserProfits + amount
+                    profits.total_profits = totalUserProfits
+                    profits.last_entry = amount
                 } else {
-                    if(direction === '+' || direction === '0'){
-                        totalUserProfits = totalUserProfits + amount
-                        profits.total_profits = totalUserProfits
-                        profits.today_profit = amount
-                        profits.today_date = today
-                    } else {
-                        totalUserProfits = totalUserProfits - amount
-                        profits.total_profits = totalUserProfits
-                        profits.today_profit = 0 - amount
-                        profits.today_date = today
-                    }
+                    totalUserProfits = totalUserProfits - amount
+                    profits.total_profits = totalUserProfits
+                    profits.last_entry = 0 - amount
                 }
             }
 
