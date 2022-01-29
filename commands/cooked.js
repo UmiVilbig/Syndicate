@@ -12,6 +12,8 @@ module.exports = {
             .setDescription("the collection to check")
             .setRequired(true)),
     async execute(interaction) {
+        today = new Date()
+        today = today.getDate()
         id = interaction.user.id
         value =  (interaction.options._hoistedOptions[0].value)
         direction = value.charAt(0)
@@ -34,22 +36,34 @@ module.exports = {
                 if(direction === '+'){
                     profits = new UserProfits({
                     user_id: id,
-                    total_profits: amount
+                    total_profits: amount,
+                    last_entry: amount
                     })
                 } else {
-                    profits = new UserProfits({
-                    user_id: id,
-                    total_profits: value
-                })
+                    if(today === profits.today_date){
+                        profits = new UserProfits({
+                            user_id: id,
+                            total_profits: value,
+                            last_entry: profits.last_entry + amount,
+                        })
+                    } else{
+                        profits = new UserProfits({
+                        user_id: id,
+                        total_profits: value,
+                        last_entry: amount
+                    })
+                    }
                 }
             } else {
-                totalUserProfits = profits.total_profits
+            totalUserProfits = profits.total_profits
                 if(direction === '+' || direction === '0'){
                     totalUserProfits = totalUserProfits + amount
                     profits.total_profits = totalUserProfits
+                    profits.last_entry = amount
                 } else {
                     totalUserProfits = totalUserProfits - amount
                     profits.total_profits = totalUserProfits
+                    profits.last_entry = 0 - amount
                 }
             }
 
