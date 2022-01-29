@@ -43,8 +43,7 @@ module.exports = {
                     profits.total_profits = profits.total_profits + lastEntry
                 }
             }
-            console.log(direction)
-            if(direction === '+'){
+            if(direction === '+' || direction === '0'){
                 profits.total_profits = profits.total_profits + amount
                 profits.last_entry = amount
             }
