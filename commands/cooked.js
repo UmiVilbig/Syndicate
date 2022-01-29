@@ -12,8 +12,6 @@ module.exports = {
             .setDescription("the collection to check")
             .setRequired(true)),
     async execute(interaction) {
-        today = new Date()
-        today = today.getDate()
         id = interaction.user.id
         value =  (interaction.options._hoistedOptions[0].value)
         direction = value.charAt(0)
@@ -25,72 +23,66 @@ module.exports = {
             })
             return;
         }
-
         
-        UserProfits.findOne({userId: id}, (err, profits) => {
-            if (err){
-                interaction.reply("An error occured when handling your request")
-                return
-            }
-            if(!profits){
-                if(direction === '+'){
-                    profits = new UserProfits({
-                    user_id: id,
-                    total_profits: amount,
-                    last_entry: amount
-                    })
-                } else {
-                    if(today === profits.today_date){
+        if(direction != '+' && direction != '-'){
+            interaction.reply({
+                content: 'please enter a direction + or -',
+                ephemeral: true
+            })
+        }
+        else{
+
+            UserProfits.findOne({userId: id}, (err, profits) => {
+                if (err){
+                    interaction.reply("An error occured when handling your request")
+                    return
+                }
+                if(!profits){
+                    if(direction === '+'){
                         profits = new UserProfits({
                             user_id: id,
-                            total_profits: value,
-                            last_entry: profits.last_entry + amount,
-                        })
-                    } else{
-                        profits = new UserProfits({
-                        user_id: id,
-                        total_profits: value,
-                        last_entry: amount
-                    })
+                            total_profits: amount,
+                            last_entry: amount
+                        })}
+                        else {
+                            profits = new UserProfits({
+                                user_id: id,
+                                total_profits: value,
+                                last_entry: value
+                            })
+                        }
+                    } else {
+                        totalUserProfits = profits.total_profits
+                        if(direction === '+'){
+                            totalUserProfits = totalUserProfits + amount
+                            profits.total_profits = totalUserProfits
+                            profits.last_entry = amount
+                        } else {
+                            totalUserProfits = totalUserProfits - amount
+                            profits.total_profits = totalUserProfits
+                            profits.last_entry = 0 - amount
+                        }
                     }
+                    
+                    profits.save(err => {
+                        if(err){
+                            console.log('there was an error committing to db')
+                        }
+                        const userCooksEmbed = new Discord.MessageEmbed()
+                        .setColor("#e11f95")
+                        .setAuthor({name: 'Syndicate', iconURL: 'https://cdn.discordapp.com/attachments/933204859728068608/933204908734312518/syndicate_logo.jpg'})
+                        .setTitle("**Syndicate Profit Tracker**")
+                        .addFields(
+                            {name: 'Your Profits', value: `${profits.total_profits} SOL`, inline: true},
+                            )
+                            .setThumbnail('https://cdn.discordapp.com/attachments/933204859728068608/933204908734312518/syndicate_logo.jpg')
+                            .setTimestamp();
+                            
+                            interaction.reply({
+                                embeds: [userCooksEmbed]
+                            })
+                        })
+                    })
                 }
-            } else {
-            totalUserProfits = profits.total_profits
-                if(direction === '+' || direction === '0'){
-                    totalUserProfits = totalUserProfits + amount
-                    profits.total_profits = totalUserProfits
-                    profits.last_entry = amount
-                } else {
-                    totalUserProfits = totalUserProfits - amount
-                    profits.total_profits = totalUserProfits
-                    profits.last_entry = 0 - amount
                 }
-            }
-
-            profits.save(err => {
-                if(err){
-                    console.log('there was an error committing to db')
-                }
-
-                if(profits.total_profits > 0){
-                    color = '#00FF00'
-                } else {
-                    color = '#FF0000'
-                }
-                const userCooksEmbed = new Discord.MessageEmbed()
-                    .setColor("#e11f95")
-                    .setAuthor({name: 'Syndicate', iconURL: 'https://cdn.discordapp.com/attachments/933204859728068608/933204908734312518/syndicate_logo.jpg'})
-                    .setTitle("**Syndicate Profit Tracker**")
-                    .addFields(
-                        {name: 'Your Profits', value: `${profits.total_profits} SOL`, inline: true},
-                    )
-                    .setThumbnail('https://cdn.discordapp.com/attachments/933204859728068608/933204908734312518/syndicate_logo.jpg')
-                    .setTimestamp();
-    
-                interaction.reply({
-                    embeds: [userCooksEmbed]
-                })
-            })
-        })
-    }
 }
